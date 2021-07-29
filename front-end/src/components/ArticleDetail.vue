@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-none w-full max-w-8xl mx-auto text-left bg-white">
-    <article class="px-4 sm:px-6 lg:mx-6 lg:px-0 xl:mx-8 text-base">
+    <article class="px-4 sm:px-6 lg:mx-6 lg:px-0 xl:mx-8 text-base py-5">
       <a href="">
-        <h1 class="pt-5 text-xl font-semibold text-gray-900">
+        <h1 class="text-xl font-semibold text-gray-900">
           {{ props.article.title }}
         </h1>
       </a>
