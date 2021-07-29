@@ -1,9 +1,10 @@
 <template>
-  <Home />
+  <AppNavigation />
+  <RouterView />
 </template>
 
 <script lang="ts" setup>
-import Home from './pages/Home.vue'
+import AppNavigation from "./components/AppNavigation.vue";
 </script>
 
 <style>
