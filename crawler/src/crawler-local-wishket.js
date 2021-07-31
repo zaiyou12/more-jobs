@@ -43,7 +43,7 @@ async function run() {
   const page = await browser.newPage();
   await page.goto(pageUrl);
 
-  const articles = await page.$$eval(selector.article, (elements) =>
+  const articles = await page.$$eval('#resultListWrap > div > div > div', (elements) =>
     elements.map((element) => {
       return {
         site: 'wishket',
