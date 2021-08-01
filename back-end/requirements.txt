@@ -1,0 +1,2 @@
+chalice==1.24.0
+httpie==2.4.0

@@ -1,0 +1,12 @@
+type Article @model {
+  create_time: String!
+  title: String!
+  site: String!
+  price: Int
+  term: Int
+  details: String
+  work_type: String
+  project_category: String
+  project_field: String
+  url: String
+}
