@@ -1,9 +1,12 @@
 declare interface Article {
+  created_time: string
   title: string
-  slug: string
-  body: string
-  createdAt: string
-  tagList: string[]
-  price: number
-  duration: number
+  site?: string
+  price?: number
+  term?: number
+  details?: string
+  work_type?: string
+  project_category?: string
+  project_field?: string
+  url?: string
 }

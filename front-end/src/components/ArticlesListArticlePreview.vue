@@ -1,16 +1,14 @@
 <template>
   <AppLink
     name="article"
-    :params="{slug: article.slug}"
+    :params="{ index:index.toString(), date: article.created_time, title: article.title }"
   >
     <article class="w-full p-2 break-all truncate border-t border-gray-300">
       <strong class="text-lg">{{ article.title }}</strong>
-      <ul class="flex mt-2">
-        <li v-for="tag in article.tagList" :key="tag">#{{ tag }}</li>
-      </ul>
       <ul class="flex mt-1">
-        <li>￦{{ article.price }}만</li>
-        <li class="ml-3">{{ article.duration }}일</li>
+        <li>{{ article.work_type }}</li>
+        <li class="ml-3" v-if="article.price">￦{{ (article.price/10000).toLocaleString() }}만</li>
+        <li class="ml-3">{{ article.term }}일</li>
       </ul>
     </article>
   </AppLink>
@@ -20,5 +18,6 @@
 import AppLink from "./AppLink.vue";
 const props = defineProps<{
   article: Article
+  index: number
 }>()
 </script>

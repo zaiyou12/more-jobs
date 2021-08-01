@@ -1,11 +1,13 @@
 import json
 import boto3
 import decimal
+from urllib import parse
 from chalice import Chalice
 from datetime import date, timedelta, datetime
 from boto3.dynamodb.conditions import Key
 
 app = Chalice(app_name='morejobs-get-articles')
+app.api.cors = True
 _DB = None
 
 def get_articles_db():
@@ -35,9 +37,13 @@ def get_articles():
           KeyConditionExpression=Key('created_time').eq(date_in_format)
         )
         result.extend(response['Items'])
-    return json.dumps(result, default=json_default)
+    return json.dumps({'articles': result}, default=json_default)
 
 
-@app.route('/articles/{date}/{title}')
+@app.route('/article/{date}/{title}')
 def get_article(date, title):
-    return {'hello': 'world'}
+    title = parse.unquote(title)
+    response = get_articles_db().query(
+        KeyConditionExpression=Key('created_time').eq(date) & Key('title').begins_with(title)
+    )
+    return json.dumps({'article': response['Items'][0]}, default=json_default)
