@@ -6,13 +6,13 @@
           <AppLink
             name="home"
           >
-            전체
+            MoreJob
           </AppLink>
         </li>
-        <li class="flex ml-6">도급</li>
+        <!-- <li class="flex ml-6">도급</li>
         <li class="flex ml-6">파견</li>
         <li class="flex ml-6">원격근무</li>
-        <li class="flex ml-6">과제</li>
+        <li class="flex ml-6">과제</li> -->
       </ul>
     </div>
   </nav>
