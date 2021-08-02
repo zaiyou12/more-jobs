@@ -30,13 +30,16 @@ def json_default(value):
 @app.route('/articles')
 def get_articles():
     result = []
-    cur_date = datetime.strptime(app.current_request.query_params.get('start'), '%Y-%m-%d')
+    date_in_format = app.current_request.query_params.get('start')
+    cur_date = datetime.strptime(date_in_format, '%Y-%m-%d')
     while(len(result) < 15):
-        cur_date, date_in_format = get_date(cur_date)
         response = get_articles_db().query(
           KeyConditionExpression=Key('created_time').eq(date_in_format)
         )
         result.extend(response['Items'])
+        cur_date, date_in_format = get_date(cur_date)
+        # For Debug
+        print(date_in_format, len(response['Items']))
     return json.dumps({'articles': result}, default=json_default)
 
 
