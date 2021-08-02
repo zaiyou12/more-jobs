@@ -8,7 +8,9 @@
       <ul class="flex mt-1">
         <li>{{ article.work_type }}</li>
         <li class="ml-3" v-if="article.price">￦{{ (article.price/10000).toLocaleString() }}만</li>
-        <li class="ml-3">{{ article.term }}일</li>
+        <li class="ml-3" v-else>견적 상호협의</li>
+        <li class="ml-3"  v-if="article.term">{{ article.term }}일</li>
+        <li class="ml-3"  v-else>일정 상호협의</li>
       </ul>
     </article>
   </AppLink>
