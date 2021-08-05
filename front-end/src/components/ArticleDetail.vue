@@ -36,7 +36,7 @@ const {
   articlesDownloading,
   articles,
   page,
-  changePage
+  loadMoreArticles
 } = useArticles()
 article.value = articles.value[index]
 
