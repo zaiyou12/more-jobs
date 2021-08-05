@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full max-w-8xl mx-auto">
+  <section class="w-full max-w-8xl mx-auto pb-5">
     <div v-if="articlesDownloading">
       Loading...
     </div>
@@ -15,6 +15,14 @@
           :index="index"
         />
       </div>
+      <div class="flex justify-start">
+        <button
+          class="p-3 underline" 
+          v-on:click="loadMoreArticles"
+        >
+          더 불러오기
+        </button>
+      </div>
     </template>
   </section>
 </template>
@@ -28,7 +36,7 @@ const {
   articlesDownloading,
   articles,
   page,
-  changePage
+  loadMoreArticles
 } = useArticles()
 
 fetchArticles()

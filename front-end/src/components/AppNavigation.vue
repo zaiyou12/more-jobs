@@ -6,7 +6,7 @@
           <AppLink
             name="home"
           >
-            MoreJob
+            MoreJobs
           </AppLink>
         </li>
         <!-- <li class="flex ml-6">도급</li>
