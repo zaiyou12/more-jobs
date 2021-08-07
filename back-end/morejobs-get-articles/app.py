@@ -9,6 +9,10 @@ from boto3.dynamodb.conditions import Key
 app = Chalice(app_name='morejobs-get-articles')
 app.api.cors = True
 _DB = None
+WORKTYPE = {
+  'freelance': '도급',
+  'contract': '상주'
+}
 
 def get_articles_db():
     global _DB
@@ -31,12 +35,16 @@ def json_default(value):
 def get_articles():
     result = []
     date_in_format = app.current_request.query_params.get('start')
+    work_type = app.current_request.query_params.get('work_type')
     cur_date = datetime.strptime(date_in_format, '%Y-%m-%d')
     while(len(result) < 15):
         response = get_articles_db().query(
           KeyConditionExpression=Key('created_time').eq(date_in_format)
         )
-        result.extend(response['Items'])
+        if work_type:
+          result.extend([x for x in response['Items'] if WORKTYPE[work_type] in x['work_type']])
+        else:
+          result.extend(response['Items'])
         cur_date, date_in_format = get_date(cur_date)
         # For Debug
         print(date_in_format, len(response['Items']))

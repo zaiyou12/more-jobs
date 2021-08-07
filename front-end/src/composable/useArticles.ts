@@ -27,12 +27,7 @@ export function useArticles() {
   async function fetchArticles(): Promise<void> {
     articles.value = [];
     let responsePromise: null | Promise<ArticlesResponse> = null;
-
-    if (workType.value === "freelance") {
-      // TODO:
-    } else if (workType.value === "all") {
-      responsePromise = getArticles(page.value);
-    }
+    responsePromise = getArticles(page.value, workType.value);
 
     if (responsePromise !== null) {
       const response = await responsePromise;
@@ -51,6 +46,10 @@ export function useArticles() {
     createAsyncProcess(fetchArticles);
 
   watch(page, runWrappedFetchArticles);
+  watch(workType, async  () => {
+    if(page.value !== today()) page.value = today()
+    else await runWrappedFetchArticles()
+  });
 
   return {
     fetchArticles: runWrappedFetchArticles,
@@ -61,8 +60,9 @@ export function useArticles() {
   };
 }
 
-export type WorkType = "all" | "contract" | "freelance" | "remote";
-export const workTypes: WorkType[] = ["all", "contract", "freelance", "remote"];
+export type WorkType = "all" | "freelance" | "contract";
+export const workTypes: WorkType[] = ["all", "freelance", "contract"];
+export const workTypesInKr = ['전체', '도급', '상주']
 export const isWorkType = (type: any): type is WorkType =>
   workTypes.includes(type);
 interface GetArticlesMetaReturn {
