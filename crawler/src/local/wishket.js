@@ -1,6 +1,14 @@
 const puppeteer = require('puppeteer');
 const { getText, getNumber, getLink, getDate, getWorkType } = require('../utils.js')
 
+/**
+ * Update required for each site
+ *
+ * The code below include all of the crawler's basic structures.
+ * You should keep the structure for crawler working properly,
+ * you only need to change **site-specific css selectors** and
+ * **special logis** for handling exception cases.
+ */
 const site = 'wishket'
 const pageUrl = 'https://www.wishket.com/project/?order_by=submit&page=1'
 const selector = {
@@ -31,6 +39,13 @@ async function getArticle(element) {
   }
 }
 
+/**
+ * Do not modify the code below.
+ * It is mandatory for crawlers on AWS lambda.
+ *
+ * The crawler accesses a page, reads all the content of the article,
+ * and stores it in AWS dynamodb.
+ */
 async function crawl(page) {
   let articles = []
   await page.goto(pageUrl);

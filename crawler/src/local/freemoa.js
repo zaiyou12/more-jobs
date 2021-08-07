@@ -6,6 +6,14 @@ const {
   getWorkType,
 } = require("../utils.js");
 
+/**
+ * Update required for each site
+ *
+ * The code below include all of the crawler's basic structures.
+ * You should keep the structure for crawler working properly,
+ * you only need to change **site-specific css selectors** and
+ * **special logis** for handling exception cases.
+ */
 const site = "freemoa";
 const pageUrl = "https://www.freemoa.net/m4/s41?page=1";
 const selector = {
@@ -24,6 +32,13 @@ async function getProjectCategory(element, selector) {
   return await getText(possibleElements[1], "div");
 }
 
+/**
+ * Do not modify the code below.
+ * It is mandatory for crawlers on AWS lambda.
+ *
+ * The crawler accesses a page, reads all the content of the article,
+ * and stores it in AWS dynamodb.
+ */
 async function getArticle(element) {
   return {
     site: site,
