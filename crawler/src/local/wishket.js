@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const { getText, getNumber, getLink, getDate, getWorkType } = require('../utils.js')
 
 const site = 'wishket'
 const pageUrl = 'https://www.wishket.com/project/?order_by=submit&page=1'
@@ -15,30 +16,6 @@ const selector = {
   url: 'a'
 }
 
-async function getText(element, selector) {
-  return await element.$eval(selector, el=>el.innerText);
-}
-
-async function getNumber(element, selector) {
-  const numberInStr = await getText(element, selector)
-  return parseInt(numberInStr.slice(0, -1).replace(/\,/g, ''), 10);
-}
-
-async function getLink(element, selector) {
-  return await element.$eval(selector, el => el.href)
-}
-
-async function getDate(element, selector) {
-  const dateInStr = await getText(element, selector)
-  return dateInStr.slice(6, -1).replace(/\./g, '-')
-}
-
-async function getWorkType(element, selector) {
-  let workType = await getText(element, selector)
-  workType = workType === '외주(도급)'? '도급': workType
-  return workType
-}
-
 async function getArticle(element) {
   return {
     site: site,
@@ -49,7 +26,7 @@ async function getArticle(element) {
     project_category: await getText(element, selector.project_category),
     project_field: await getText(element, selector.project_field),
     details: await getText(element, selector.details),
-    created_time: await getDate(element, selector.created_time),
+    created_time: (await getDate(element, selector.created_time)).slice(6, -1),
     url: await getLink(element, selector.url)
   }
 }
@@ -57,7 +34,7 @@ async function getArticle(element) {
 async function crawl(page) {
   let articles = []
   await page.goto(pageUrl);
-  const articleNodes = await page.$$('#resultListWrap > div > div > div');
+  const articleNodes = await page.$$(selector.article);
   for (let articleNode of articleNodes) {
     articles.push(await getArticle(articleNode))
   }
