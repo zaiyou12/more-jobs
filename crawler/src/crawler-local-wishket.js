@@ -2,68 +2,72 @@ const puppeteer = require('puppeteer');
 
 const site = 'wishket'
 const pageUrl = 'https://www.wishket.com/project/?order_by=submit&page=1'
+const selector = {
+  article: '#resultListWrap > div > div > div',
+  title: 'h4',
+  price: 'p.estimated-price > span.estimated-data',
+  term: 'p.estimated-term > span.estimated-data',
+  work_type: 'div.simple-chip',
+  project_category: 'p.category',
+  project_field: 'p.subcategory',
+  details: 'div.project-description',
+  created_time: 'div.project-recruit-guide',
+  url: 'a'
+}
 
-// FIXME: Cannot read constant value in below map function
-// const selector = {
-//   article: '#resultListWrap > div > div > div',
-//   title: 'h4',
-//   price: 'p.estimated-price > span.estimated-data',
-//   term: 'p.estimated-term > span.estimated-data',
-//   work_type: 'div.simple-chip',
-//   project_category: 'p.category',
-//   project_field: 'p.subcategory',
-//   details: 'div.project-description',
-//   created_time: 'div.project-recruit-guide',
-//   url: 'a'
-// }
+async function getText(element, selector) {
+  return await element.$eval(selector, el=>el.innerText);
+}
 
-// const getInnerText = (element, selector) => {
-//   return element.querySelector(selector).innerText;
-// }
-// const getInnerTextInNumber = (element, selector) => {
-//   return parseInt(element.querySelector(selector).innerText.slice(0, -1).replace(/\,/g, ''), 10);
-// }
-// const getArticle = (element) => {
-//   return {
-//     site: site,
-//     title: getInnerText(element, selector.title),
-//     price: getInnerTextInNumber(element, selector.price),
-//     term: getInnerTextInNumber(element, selector.term),
-//     work_type: getInnerText(element, selector.work_type),
-//     project_category: getInnerText(element, selector.project_category),
-//     project_field: getInnerText(element, selector.project_field),
-//     details: getInnerText(element, selector.details),
-//     created_time: getInnerText(element, selector.created_time),
-//     url: element.querySelector(selector.url).href
-//   }
-// }
+async function getNumber(element, selector) {
+  const numberInStr = await getText(element, selector)
+  return parseInt(numberInStr.slice(0, -1).replace(/\,/g, ''), 10);
+}
 
-async function run() {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+async function getLink(element, selector) {
+  return await element.$eval(selector, el => el.href)
+}
+
+async function getDate(element, selector) {
+  const dateInStr = await getText(element, selector)
+  return dateInStr.slice(6, -1).replace(/\./g, '-')
+}
+
+async function getWorkType(element, selector) {
+  let workType = await getText(element, selector)
+  workType = workType === '외주(도급)'? '도급': workType
+  return workType
+}
+
+async function getArticle(element) {
+  return {
+    site: site,
+    title: await getText(element, selector.title),
+    price: await getNumber(element, selector.price),
+    term: await getNumber(element, selector.term),
+    work_type: await getWorkType(element, selector.work_type),
+    project_category: await getText(element, selector.project_category),
+    project_field: await getText(element, selector.project_field),
+    details: await getText(element, selector.details),
+    created_time: await getDate(element, selector.created_time),
+    url: await getLink(element, selector.url)
+  }
+}
+
+async function crawl(page) {
+  let articles = []
   await page.goto(pageUrl);
-
-  const articles = await page.$$eval('#resultListWrap > div > div > div', (elements) =>
-    elements.map((element) => {
-      return {
-        site: 'wishket',
-        title: element.querySelector('h4').innerText,
-        price: parseInt(element.querySelector('p.estimated-price > span.estimated-data').innerText.slice(0, -1).replace(/\,/g, ''), 10),
-        term: parseInt(element.querySelector('p.estimated-term > span.estimated-data').innerText.slice(0, -1).replace(/\,/g, ''), 10),
-        work_type: element.querySelector('div.simple-chip').innerText,
-        project_category: element.querySelector('p.category').innerText,
-        project_field: element.querySelector('p.subcategory').innerText,
-        details: element.querySelector('div.project-description').innerText,
-        created_time: element.querySelector('div.project-recruit-guide').innerText.slice(6, -1).replaceAll('.', '-'),
-        url: element.querySelector('a').href
-      }
-    })
-  );
-  await browser.close();
+  const articleNodes = await page.$$('#resultListWrap > div > div > div');
+  for (let articleNode of articleNodes) {
+    articles.push(await getArticle(articleNode))
+  }
   return articles
 }
 
 (async () => {
-  const articles = await run();
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  const articles = await crawl(page);
   console.log(articles);
+  await browser.close();
 })();
