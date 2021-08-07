@@ -39,5 +39,7 @@ const {
   loadMoreArticles
 } = useArticles()
 
-fetchArticles()
+if (articles.value.length == 0) {
+  fetchArticles()
+} 
 </script>
