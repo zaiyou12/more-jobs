@@ -1,7 +1,7 @@
 <template>
   <AppLink
     name="article"
-    :params="{ index:index.toString(), date: article.created_time, title: article.title }"
+    :params="{workType, index:index.toString(), date: article.created_time, title: article.title }"
   >
     <article class="w-full p-2 break-all truncate border-t border-gray-300">
       <strong class="text-lg">{{ article.title }}</strong>
@@ -18,9 +18,11 @@
 </template>
 
 <script lang="ts" setup>
+import { getArticlesMeta } from "../composable/useArticles";
 import AppLink from "./AppLink.vue";
 const props = defineProps<{
   article: Article
   index: number
 }>()
+const { workType } = getArticlesMeta();
 </script>

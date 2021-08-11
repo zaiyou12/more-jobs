@@ -34,7 +34,7 @@
   </nav>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import logo from '../assets/logo.png'
 import logoLarge from '../assets/logo-large.png'
 import {workTypes, workTypesInKr} from '../composable/useArticles'

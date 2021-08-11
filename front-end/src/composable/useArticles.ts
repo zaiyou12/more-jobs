@@ -68,7 +68,7 @@ export const isWorkType = (type: any): type is WorkType =>
 interface GetArticlesMetaReturn {
   workType: ComputedRef<string>;
 }
-function getArticlesMeta(): GetArticlesMetaReturn {
+export function getArticlesMeta(): GetArticlesMetaReturn {
   const route = useRoute();
 
   const workType = ref<WorkType>("all");
