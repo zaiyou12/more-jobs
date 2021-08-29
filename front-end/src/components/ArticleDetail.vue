@@ -27,7 +27,9 @@
         <li v-if="article.work_type">{{ article.work_type }}</li>
         <li v-if="article.project_category">{{ article.project_category }}</li>
         <li v-if="article.project_field">{{ article.project_field }}</li>
-        <li v-if="article.url">{{ article.url }}</li>
+        <li v-if="article.url">
+          <a :href="article.url" target="_blank">{{ article.url }}</a>
+        </li>
       </ul>
       <p class="mt-4">
         {{ article.details }}
