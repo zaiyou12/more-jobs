@@ -11,7 +11,7 @@
     <ArticlesListBackground :site="article.site">
       <!-- Tags -->
       <div class="flex">
-        <ArticleType :workType="article.work_type? article.work_type: ''"/>
+        <ArticleType :workType="article.work_type ? article.work_type : ''" />
         <ArticleSiteLogo :site="article.site" />
       </div>
       <!-- Title -->
@@ -35,11 +35,11 @@
 </template>
 
 <script lang="ts" setup>
-import { getArticlesMeta } from "../composable/useArticles";
-import AppLink from "./AppLink.vue";
-import ArticleType from "./ArticleType.vue"
-import ArticleSiteLogo from './ArticleSiteLogo.vue'
-import ArticlesListBackground from './ArticlesListBackground.vue'
+import AppLink from "../AppLink.vue";
+import ArticleType from "./ArticleType.vue";
+import ArticleSiteLogo from "./ArticleSiteLogo.vue";
+import { getArticlesMeta } from "../../composable/useArticles";
+import ArticlesListBackground from "./ArticlesListBackground.vue";
 const props = defineProps<{
   article: Article;
   index: number;

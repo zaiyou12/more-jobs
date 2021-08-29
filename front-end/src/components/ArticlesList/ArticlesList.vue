@@ -1,11 +1,7 @@
 <template>
   <section class="w-full max-w-8xl mx-auto pb-5">
-    <div v-if="articlesDownloading">
-      Loading...
-    </div>
-    <div v-else-if="articles.length === 0">
-      No articles are here
-    </div>
+    <div v-if="articlesDownloading">Loading...</div>
+    <div v-else-if="articles.length === 0">No articles are here</div>
     <template v-else>
       <div class="bg-white shadow text-base text-gray-600 text-left">
         <ArticlesListArticlePreview
@@ -16,10 +12,7 @@
         />
       </div>
       <div class="flex justify-start">
-        <button
-          class="p-3 underline" 
-          v-on:click="loadMoreArticles"
-        >
+        <button class="p-3 underline" v-on:click="loadMoreArticles">
           더 불러오기
         </button>
       </div>
@@ -28,18 +21,13 @@
 </template>
 
 <script lang="ts" setup>
-import ArticlesListArticlePreview from '../components/ArticlesListArticlePreview.vue'
-import { useArticles } from '../composable/useArticles';
+import ArticlesListArticlePreview from "./ArticlesListArticlePreview.vue";
+import { useArticles } from "../../composable/useArticles";
 
-const {
-  fetchArticles,
-  articlesDownloading,
-  articles,
-  page,
-  loadMoreArticles
-} = useArticles()
+const { fetchArticles, articlesDownloading, articles, page, loadMoreArticles } =
+  useArticles();
 
 if (articles.value.length == 0) {
-  fetchArticles()
-} 
+  fetchArticles();
+}
 </script>
