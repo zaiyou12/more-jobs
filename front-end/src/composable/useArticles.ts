@@ -60,6 +60,10 @@ export function useArticles() {
   };
 }
 
+export type SiteType = 'wishket' | 'freemoa' | 'castingn';
+const siteTypes: SiteType[] = ['wishket', 'freemoa', 'castingn']
+export const isSiteType = (type: any): type is SiteType => siteTypes.includes(type);
+
 export type WorkType = "all" | "freelance" | "contract";
 export const workTypes: WorkType[] = ["all", "freelance", "contract"];
 export const workTypesInKr = ['전체', '도급', '상주']

@@ -59,7 +59,7 @@ import { useRoute } from "vue-router";
 import { useArticles } from "../composable/useArticles";
 
 const article = ref<Article | null>();
-const details = ref<String[]>([])
+const details = ref<string[] | undefined>([])
 const route = useRoute();
 const index = parseInt(route.params.index as string);
 

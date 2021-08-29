@@ -1,15 +1,17 @@
 <template>
   <article
     class="w-full p-2 break-all truncate border-t border-gray-300 flex-col"
-    :class="bgColor[site]"
+    :class="site && isSiteType(site)? bgColor[site]:''"
   >
     <slot />
   </article>
 </template>
 
 <script lang="ts" setup>
+import { isSiteType } from '../../composable/useArticles'
+
 const props = defineProps<{
-  site: String;
+  site: string | undefined;
 }>();
 const bgColor = {
   wishket: "bg-green-50",
