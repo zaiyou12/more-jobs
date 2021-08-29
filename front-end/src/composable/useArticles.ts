@@ -71,7 +71,7 @@ interface GetArticlesMetaReturn {
 export function getArticlesMeta(): GetArticlesMetaReturn {
   const route = useRoute();
 
-  const workType = ref<WorkType>("all");
+  const workType = ref<WorkType>('all');
 
   watch(
     () => route.params.workType,

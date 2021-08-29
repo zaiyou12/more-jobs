@@ -21,10 +21,11 @@
             <img :src="logoLarge" class="h-10 hidden lg:block" />
           </AppLink>
         </li>
-        <li v-for="(workType, index) in workTypes" :key="workType" class="flex ml-6">
+        <li v-for="(item, index) in workTypes" :key="item" class="flex ml-6"
+          :class="item === workType? 'font-bold' : 'font-normal'">
           <AppLink
             name="home"
-            :params="{workType}"
+            :params="{workType: item}"
           >
             {{ workTypesInKr[index] }}
           </AppLink>
@@ -35,13 +36,10 @@
 </template>
 
 <script lang="ts" setup>
+import { getArticlesMeta } from '../composable/useArticles'
 import logo from '../assets/logo.png'
 import logoLarge from '../assets/logo-large.png'
 import {workTypes, workTypesInKr} from '../composable/useArticles'
-</script>
 
-<style scoped>
-a.router-link-exact-active {
-  font-weight: 700;
-}
-</style>
+const { workType } = getArticlesMeta();
+</script>
